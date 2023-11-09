@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import githubReducer from "./GithubReducer";
+import { data } from "autoprefixer";
 
 const GithubContext = createContext();
 
@@ -11,6 +12,7 @@ export const GithubProvider = ({ children }) => {
     users: [],
     user: {},
     loading: false,
+    repos: [],
   };
 
   const [state, dispatch] = useReducer(githubReducer, initialState);
@@ -42,7 +44,7 @@ export const GithubProvider = ({ children }) => {
       window.location = "./notfound";
     } else {
       const data = await response.json();
-
+      // Ahi aapde payload ma data direct mokaliye chiye.
       dispatch({
         type: "GET_USER",
         payload: data,
@@ -50,8 +52,22 @@ export const GithubProvider = ({ children }) => {
     }
   };
 
-  // Clear Dispatch
+  // Repos
+  const getUserRepos = async (login) => {
+    const response = await fetch(`${GITHUB_URL}/users/${login}/repos`);
 
+    if (response.status === 404) {
+      window.location = "./notfound";
+    } else {
+      const data = await response.json();
+      dispatch({
+        type: "GET_USER_REPOS",
+        payload: data,
+      });
+    }
+  };
+
+  // Clear Dispatch
   const clearUsers = () =>
     dispatch({
       type: "CLEAR_USERS",
@@ -64,15 +80,18 @@ export const GithubProvider = ({ children }) => {
       type: "SET_LOADING",
     });
 
+  // naaahre
   return (
     <GithubContext.Provider
       value={{
         users: state.users,
         loading: state.loading,
         user: state.user,
+        repos: state.repos,
         searchUsers,
         clearUsers,
         getUser,
+        getUserRepos,
       }}
     >
       {children}

@@ -10,7 +10,7 @@ import Footer from "./components/layout/Footer";
 import { GithubProvider } from "./context/github/GithubContext";
 import { AlertProvider } from "./context/alert/AlertContext";
 
-function App() {
+const App = () => {
   return (
     <GithubProvider>
       <AlertProvider>
@@ -34,6 +34,6 @@ function App() {
       </AlertProvider>
     </GithubProvider>
   );
-}
+};
 
 export default App;
