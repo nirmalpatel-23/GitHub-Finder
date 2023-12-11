@@ -11,6 +11,11 @@ function UserSearch() {
 
   const handleChange = (e) => setText(e.target.value);
 
+  const clearAll = () => {
+    clearUsers();
+    setText("");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -19,7 +24,7 @@ function UserSearch() {
     } else {
       searchUsers(text);
 
-      setText("");
+      setText(text);
     }
   };
 
@@ -48,7 +53,7 @@ function UserSearch() {
       </div>
       {users.length > 0 && (
         <div>
-          <button onClick={clearUsers} className="btn btn-ghost btn-lg">
+          <button onClick={clearAll} className="btn btn-ghost btn-lg">
             Clear
           </button>
         </div>
